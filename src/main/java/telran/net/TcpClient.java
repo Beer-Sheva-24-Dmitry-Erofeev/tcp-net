@@ -14,8 +14,9 @@ import static telran.net.TcpConfigurationProperties.DEFAULT_INTERVAL_CONNECTION;
 import static telran.net.TcpConfigurationProperties.DEFAULT_TRIALS_NUMBER_CONNECTION;
 import static telran.net.TcpConfigurationProperties.RESPONSE_CODE_FIELD;
 import static telran.net.TcpConfigurationProperties.RESPONSE_DATA_FIELD;
+import telran.net.exeptions.ServerUnavaliableExeption;
 
-public class TcpClient implements Closeable {
+public class TcpClient implements Closeable, NetworkClient {
 
     Socket socket;
     PrintStream writer;
@@ -50,6 +51,9 @@ public class TcpClient implements Closeable {
                 count--;
             }
         } while (count != 0);
+        if (socket == null) {
+            throw new ServerUnavaliableExeption(host, port);
+        }
     }
 
     private void waitForInterval() {
@@ -60,14 +64,19 @@ public class TcpClient implements Closeable {
 
     @Override
     public void close() throws IOException {
-        socket.close();
+        if (socket != null) {
+            socket.close();
+        }
     }
 
-    public String sendAndRecieve(String requestType, String requestData) {
-
+    @Override
+    public String sendAndReceive(String requestType, String requestData) {
         Request request = new Request(requestType, requestData);
 
         try {
+            if (socket == null) {
+                throw new ServerUnavaliableExeption(host, port);
+            }
             writer.println(request);
             String responseJSON = reader.readLine();
             JSONObject jsonObj = new JSONObject(responseJSON);
@@ -78,7 +87,8 @@ public class TcpClient implements Closeable {
             }
             return responseData;
         } catch (IOException e) {
-            throw new RuntimeException("Server is unavaliable");
+            connect();
+            throw new ServerUnavaliableExeption(host, port);
         }
     }
 
