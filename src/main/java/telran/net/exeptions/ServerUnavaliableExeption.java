@@ -4,6 +4,6 @@ package telran.net.exeptions;
 public class ServerUnavaliableExeption extends IllegalStateException {
 
     public ServerUnavaliableExeption(String host, int port) {
-        super(String.format("Server %s on port %d is unavaliable, try to reconnect later", host, port));
+        super(String.format("Server %s on port %d is unavaliable, try to reconnect later.", host, port));
     }
 }

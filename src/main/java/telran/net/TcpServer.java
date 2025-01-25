@@ -7,6 +7,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import static telran.net.TcpConfigurationProperties.DEFAULT_SOCKET_TIMEOUT;
+
 // Runnable - функциональный интерфейс с единственным методом run(),
 // Что-то просто может запускаться
 public class TcpServer implements Runnable {
@@ -29,8 +31,8 @@ public class TcpServer implements Runnable {
     @Override
     public void run() {
         try (ServerSocket serverSocket = new ServerSocket(port)) {
-            System.out.println("Server is listening on the port " + port);
-            serverSocket.setSoTimeout(1000); // Маленький таймаут для graceful shutdown
+            System.out.println("Server is listening on the port: " + port);
+            serverSocket.setSoTimeout(DEFAULT_SOCKET_TIMEOUT); // Маленький таймаут для graceful shutdown
             while (!isShutdown.get()) {
                 try {
                     Socket socket = serverSocket.accept();

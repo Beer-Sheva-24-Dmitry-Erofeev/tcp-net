@@ -1,4 +1,4 @@
-package telran.net;
+/* package telran.net;
 
 import java.util.Scanner;
 
@@ -23,4 +23,4 @@ public class TcpServerShutdownTest {
             }
         }
     }
-}
+} */

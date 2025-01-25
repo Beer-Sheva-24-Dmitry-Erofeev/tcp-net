@@ -13,11 +13,13 @@
         <maven.compiler.target>23</maven.compiler.target>
     </properties>
     <dependencies>
+        <!-- https://mvnrepository.com/artifact/org.json/json -->
         <dependency>
             <groupId>org.json</groupId>
             <artifactId>json</artifactId>
-            <version>20240303</version>
+            <version>20250107</version>
         </dependency>
+
         <dependency>
             <groupId>telran.view</groupId>
             <artifactId>cli-view</artifactId>
